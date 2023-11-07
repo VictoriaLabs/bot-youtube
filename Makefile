@@ -1,26 +1,5 @@
-APPLICATION_NAME ?= youtube-bot
-CONTAINER_NAME ?= youtube-bot-container
-PORT ?= 8000
-
-install: 
-	docker build -t ${APPLICATION_NAME} .
-
-build:
-	docker image rm ${APPLICATION_NAME}
-	docker build -t ${APPLICATION_NAME} .
-
 run:
-	docker run -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${APPLICATION_NAME}
+	docker-compose up -d
 
 stop:
-	docker stop ${CONTAINER_NAME}
-	docker rm ${CONTAINER_NAME}
-
-restart:
-	docker stop ${CONTAINER_NAME}
-	docker rm ${CONTAINER_NAME}
-	docker run -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${APPLICATION_NAME}
-
-quickStart:
-	npm i
-	node app.ts
+	docker stop bot-youtube-app-1
