@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messages Stream</title>
+    <script>
+        async function loadMessages() {
+            const response = await fetch('/messages');
+            const messages = await response.json();
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = messages.map(msg => `<strong>${msg.platform}</strong> ${msg.author}: ${msg.message}`).join('<br>');
+        }
+
+        setInterval(loadMessages, 3000); // Mettre à jour les messages toutes les 3 secondes
+    </script>
+</head>
+<body>
+<h1>Stream Messages</h1>
+<div id="messages"></div>
+</body>
+</html>

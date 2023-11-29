@@ -1,44 +1,85 @@
-// import express from 'express';
-// import http from 'http';
-// import { Server, Socket } from 'socket.io';
-// import { io } from 'socket.io-client';
+import { Request, Response } from 'express';
+const express = require('express')
+const { request: Req } = require('express')
+const { response: Res } = require('express')
+const { google } = require('googleapis');
+const { LiveChat } = require("youtube-chat")
+const app = express();
+const port = 8000;
 
-// const app = express();
-// const server = http.createServer(app);
-// const socketServer = new Server(server);
+let allMessages: string[] = [];
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
+/** EXPRESS **/
+app.get('/', (req: Request, res: Response) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
-// const socket = io('http://localhost:8080');
+app.get('/messages', (req: typeof Req, res: typeof Res) => {
+  res.json(allMessages);
+});
 
-// const PORT = 8080;
-// server.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
+/** YOUTUBE **/
+async function chat() {
+  try {
 
-// socketServer.on('error', (error) => {
-//   console.error(`WebSocket error: ${error.message}`);
-// });
+    //const liveChat
+    const liveChat = new LiveChat({ liveId: "fG1qW6z7hwU" })
 
-// socketServer.on('connection', (socket: Socket) => {
-//   console.log('A user connected');
+    let going = false
+    liveChat.on("start", () => {
+      console.log('start')
+      setTimeout(() => {
+        going = true
+      }, 8000)
+    })
 
-//   // Handle events
-//   socket.on('chat message', (msg: string) => {
-//     socketServer.emit('chat message', msg);
-//   });
+    liveChat.on("end", () => {
+      going = false
+      setTimeout(() => {
+        chat();
+      }, 8000)
+    })
 
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected');
-//   });
-// });
+    interface ChatItem {
+      author: {
+        name: string;
+      };
+      message: {
+        text: string;
+      }[];
+    }
 
-// // Example: Emit a message to the server
-// socket.emit('chat message', 'Hello, server!');
+    liveChat.on("chat", (chatItem: ChatItem) => {
+      console.log(chatItem);
+      allMessages.push(JSON.stringify({
+        platform: 'YouTube',
+        author: chatItem.author.name,
+        message: chatItem.message[0].text
+      }));
+      console.log('-------------------------------------------------------')
+    })
 
-// // Example: Listen for messages from the server
-// socket.on('chat message', (msg: string) => {
-//   console.log(`Received message: ${msg}`);
-// });
+    liveChat.on("error", (error: any) => {
+      console.log(error);
+    });
+
+    const ok = await liveChat.start()
+    if (!ok) {
+      setTimeout(() => {
+        chat();
+      }, 8000)
+    }
+
+  } catch {
+    setTimeout(() => {
+      chat();
+    }, 8000)
+  }
+}
+
+chat();
+
+
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});
