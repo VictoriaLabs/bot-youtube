@@ -1,56 +1,44 @@
-const express = require('express')
-const { request: Req } = require('express')
-const { response: Res } = require('express')
-const puppeteer = require('puppeteer'); //puppeteer is a node library that emulates a headless browser
+// import express from 'express';
+// import http from 'http';
+// import { Server, Socket } from 'socket.io';
+// import { io } from 'socket.io-client';
 
-const app = express();
-const port = 8000;
+// const app = express();
+// const server = http.createServer(app);
+// const socketServer = new Server(server);
 
-async function runBot(channelName: string) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
 
-  // Access the YouTube channel using the provided channel name
-  await page.goto(`https://www.youtube.com/c/${channelName}`);
+// const socket = io('http://localhost:8080');
 
-  // Detect if the channel is live
-  const isLive = await page.evaluate(() => {
-    const liveIndicator = document.querySelector('yt-live-chat-text-message-renderer');
-    return liveIndicator && liveIndicator.textContent === 'EN DIRECT';
-  });
+// const PORT = 8080;
+// server.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
 
-  if (isLive) {
-    // If the channel is live, click on the chat input field
-    await page.click('yt-live-chat-text-input-field-renderer');
-    await page.waitForSelector('yt-live-chat-text-input-field-renderer input');
-    const chatInput = await page.$('yt-live-chat-text-input-field-renderer input');
+// socketServer.on('error', (error) => {
+//   console.error(`WebSocket error: ${error.message}`);
+// });
 
-    // Listen for new chat messages
-    page.on('console', (message: any) => {
-      if (message.type() === 'log' && message.text().includes('yt-live-chat-text-message-renderer')) {
-        console.log(message.text());
-        // Send the messages to your server
-      }
-    });
+// socketServer.on('connection', (socket: Socket) => {
+//   console.log('A user connected');
 
-    await chatInput.type('Bonjour, je suis un bot !'); // This is the message you want to send to ensure the bot is working
-    await chatInput.press('Enter'); // Send the message
+//   // Handle events
+//   socket.on('chat message', (msg: string) => {
+//     socketServer.emit('chat message', msg);
+//   });
 
-    // Keep the browser open to receive chat messages
-  }
+//   socket.on('disconnect', () => {
+//     console.log('User disconnected');
+//   });
+// });
 
-  // When finished, close the browser
-  await browser.close();
-}
+// // Example: Emit a message to the server
+// socket.emit('chat message', 'Hello, server!');
 
-const channelName = 'vardose'; // Replace with the desired channel name
-runBot(channelName);
-
-app.get('/', (req: typeof Req, res: typeof Res) => {
-  res.send('Express Bot TS');
-});
-
-
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+// // Example: Listen for messages from the server
+// socket.on('chat message', (msg: string) => {
+//   console.log(`Received message: ${msg}`);
+// });
