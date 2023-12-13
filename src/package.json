@@ -4,7 +4,7 @@
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -22,20 +22,20 @@
     "@types/express": "^4.17.20",
     "@types/node": "^20.8.10",
     "@types/socket.io": "^3.0.2",
+    "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "tmi.js": "^1.8.5",
-    "axios": "^1.6.2",
     "googleapis": "^128.0.0",
-    "youtube-chat": "^2.2.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
+    "tmi.js": "^1.8.5",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.2.2"
+    "youtube-chat": "^2.2.0"
   },
   "devDependencies": {
-    "@types/tmi.js": "^1.8.6"
+    "@types/tmi.js": "^1.8.6",
+    "typescript": "^5.3.2"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",

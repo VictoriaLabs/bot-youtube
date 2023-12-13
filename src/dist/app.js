@@ -24,12 +24,13 @@ app.get('/', (req, res) => {
 app.get('/messages', (req, res) => {
     res.json(allMessages);
 });
+
 /** YOUTUBE **/
 function chat() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //const liveChat
-            const liveChat = new LiveChat({ liveId: "fG1qW6z7hwU" });
+            const liveChat = new LiveChat({ channelId: "UCHoLuRQVGaz5lkdnIZWB8Pw" });
             let going = false;
             liveChat.on("start", () => {
                 console.log('start');
