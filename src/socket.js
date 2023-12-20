@@ -1,19 +1,26 @@
-const socket = require('socket.io-client')('http://localhost:4000');
 
-function emitEvent(eventName, data) {
-    if (socket.connected)
-      socket.emit(eventName, data);
-    else
-      console.log('Le socket n\'est pas connecté.');
-};
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 
-function onEvent(eventName, callback) {
-    socket.on(eventName, callback);
-};
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
-function disconnect() {
-    socket.disconnect();
-    console.log('Déconnecté du serveur WebSocket');
-};
+io.on('connection', (socket) => {
+  console.log('Un client s\'est connecté');
 
-module.exports = { emitEvent, onEvent, disconnect };
+  // Gérer les événements du client
+  socket.on('message', (data) => {
+    console.log('Message reçu du client:', data);
+  });
+
+  // Gérer la déconnexion du client
+  socket.on('disconnect', () => {
+    console.log('Un client s\'est déconnecté');
+  });
+});
+
+server.listen(4001, () => {
+  console.log('Le serveur WebSocket est en écoute sur le port 4000');
+});
