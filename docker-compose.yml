@@ -3,9 +3,9 @@ services:
   app:
     build: .
     ports:
-      - '8080:8080'
+      - '8081:8081'
     environment:
-      - PORT=8080
+      - PORT=8081
     volumes:
       - ./src:/usr/src/app
     command: bash -c "npm i && npx ts-node-dev --clear --poll app.ts" #remplacer par "npm i && npx ts-node app.ts" en prod (node-dev utilise du CPU)
