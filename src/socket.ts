@@ -1,6 +1,10 @@
 import { Socket } from 'socket.io-client';
+import * as dotenv from 'dotenv';
 
-const socket: Socket = require('socket.io-client')(`${process.env.SERVER_LINK}${process.env.SERVER_PORT}`);
+dotenv.config();
+
+console.log(`Connexion au serveur WebSocket ${process.env.SERVER_LINK}:${process.env.SERVER_PORT}`);
+const socket: Socket = require('socket.io-client')(`${process.env.SERVER_LINK}:${process.env.SERVER_PORT}`);
 
 function emitEvent(eventName: string, data: any): void {
     if (socket.connected)
@@ -9,7 +13,7 @@ function emitEvent(eventName: string, data: any): void {
       console.log('Le socket n\'est pas connecté.');
 };
 
-function onEvent(eventName: string, callback: (...args: any[]) => void): void {
+function onEvent(eventName: string, callback: any): void {
     socket.on(eventName, callback);
 };
 
@@ -18,4 +22,4 @@ function disconnect(): void {
     console.log('Déconnecté du serveur WebSocket');
 };
 
-export { emitEvent, onEvent, disconnect };
+export { emitEvent, onEvent, disconnect, socket };
