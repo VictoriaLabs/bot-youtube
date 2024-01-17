@@ -3,9 +3,10 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(`Connexion au serveur WebSocket ${process.env.SERVER_LINK}:${process.env.SERVER_PORT}`);
+//connect to the server
 const socket: Socket = require('socket.io-client')(`${process.env.SERVER_LINK}:${process.env.SERVER_PORT}`);
 
+//emit and listen to events
 function emitEvent(eventName: string, data: any): void {
     if (socket.connected)
       socket.emit(eventName, data);
@@ -13,10 +14,12 @@ function emitEvent(eventName: string, data: any): void {
       console.log('Le socket n\'est pas connecté.');
 };
 
+//listen to events
 function onEvent(eventName: string, callback: any): void {
     socket.on(eventName, callback);
 };
 
+//disconnect from the server
 function disconnect(): void {
     socket.disconnect();
     console.log('Déconnecté du serveur WebSocket');
