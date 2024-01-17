@@ -2,9 +2,10 @@ import dotenv from "dotenv";
 import { Socket } from 'socket.io-client';
 
 dotenv.config();
-const PORT = process.env.PORT;
+const SERVER_PORT = process.env.SERVER_PORT;
+const SERVER_LINK = process.env.SERVER_LINK;
 
-const socket: Socket = require('socket.io-client')(`http://localhost:${PORT}`);
+const socket: Socket = require('socket.io-client')(`${SERVER_LINK}${SERVER_PORT}`);
 
 function emitEvent(eventName: string, data: any): void {
     if (socket.connected)
