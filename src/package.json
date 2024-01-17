@@ -1,10 +1,10 @@
 {
   "name": "bot-youtube",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "ts-node app.ts"
   },
   "repository": {
     "type": "git",
@@ -29,8 +29,9 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "tmi.js": "^1.8.5",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3",
     "youtube-chat": "^2.2.0"
   },
   "devDependencies": {
