@@ -1,14 +1,8 @@
-const express = require('express')
-const { request: Req } = require('express')
-const { response: Res } = require('express')
+import { Chat } from "./Chat";
+import * as socket from './socket';
 
-const app = express();
-const port = 8000;
-
-app.get('/', (req: typeof Req, res: typeof Res) => {
-  res.send('Express Bot TS');
-});
-
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+//listen to the server for channelId and call Chat class to start the chat listener
+socket.onEvent("channelId", (data: string) => {
+  let chat: Chat = new Chat(data);
+  chat.startChat();
 });
