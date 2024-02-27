@@ -1,4 +1,4 @@
-import { Chat } from "./Chat";
+import { Chat } from "./chats/chat.ts";
 import * as socket from './socket';
 
 //listen to the server for channelId and call Chat class to start the chat listener

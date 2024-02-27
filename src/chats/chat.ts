@@ -1,5 +1,6 @@
 import { LiveChat } from "youtube-chat";
-import * as socket from "./socket.ts";
+import * as socket from "../socket.ts";
+import { getChannelData } from "../services/fetch_acc_data.ts";
 
 interface LiveChats {
   [key: string]: LiveChat;
@@ -19,6 +20,21 @@ class Chat {
       console.log(`Chat for channel ${this.channelId} is already running.`);
       return false;
     }
+
+    // On recupere les infos de la chaine qu'on écoute, name ; desc ; sub count ; vids count ; view count
+    const channelData = await getChannelData(this.channelId);
+    if (!channelData) {
+      console.log(`Error fetching channel data for id: ${this.channelId}`);
+      return false;
+    }
+    console.log(`Channel Name: ${channelData.name}`);
+    console.log(`Channel Description: ${channelData.description}`);
+    console.log(`Subscriber Count: ${channelData.subscriberCount}`);
+    console.log(`Video Count: ${channelData.videoCount}`);
+    console.log(`View Count: ${channelData.viewCount}`);
+
+
+
     const liveChat = new LiveChat({ channelId: this.channelId });
 
     //start the chat listener on "start" event
