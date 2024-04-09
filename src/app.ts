@@ -1,4 +1,4 @@
-import { Chat } from "./Chat";
+import { Chat } from "./chats/chat.ts";
 import * as socket from './socket';
 import Sentry from "@sentry/node";
 
