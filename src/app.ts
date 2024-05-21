@@ -1,14 +1,27 @@
-const express = require('express')
-const { request: Req } = require('express')
-const { response: Res } = require('express')
+import { log } from "console";
+import { Chat } from "./chats/chat.ts";
+import * as socket from './socket';
 
-const app = express();
-const port = 8000;
+let channels: string[] = [];//store the channelIds of the channels to listen to
+let chats: Chat[] = [];//store the chat objects of the channels to listen to
 
-app.get('/', (req: typeof Req, res: typeof Res) => {
-  res.send('Express Bot TS');
+//listen to the server for channelId and call Chat class to start the chat listener
+socket.onEvent("start-listening", (data: { youtube: string }) => {
+  if (data.youtube != null && data.youtube != "") {
+    channels.push(data.youtube);
+    let chat = new Chat(data.youtube);
+    chats.push(chat);
+    chat.startChat();
+  }
 });
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+socket.onEvent("stop-listening", (data: {youtube: string}) => {
+  if (data.youtube != null && data.youtube != "") {
+     chats.forEach((chat, index) => {
+       if (chat.channelId === data.youtube) {
+         chat.stopChat();
+         chats.splice(index, 1);
+       }
+     });
+  }
 });
