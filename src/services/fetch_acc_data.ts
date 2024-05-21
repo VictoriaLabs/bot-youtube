@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 async function getChannelData(channelId: string) {
     try {
         const channelResult = await google.youtube('v3').channels.list({
-            auth: 'AIzaSyA062LowgKy5wxTh73iNTbX1oR9dA3u3ak',
+            auth: process.env.YOUTUBE_API_KEY,
             part: ['snippet', 'contentDetails', 'statistics'],
             id: [channelId]
         });

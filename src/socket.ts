@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 //connect to the server
-const socket: Socket = require('socket.io-client')(`${process.env.SERVER_LINK}:${process.env.SERVER_PORT}`);
+const socket: Socket = require('socket.io-client')(process.env.WEBSOCKET_URL);
 
 //emit and listen to events
 function emitEvent(eventName: string, data: any): void {
