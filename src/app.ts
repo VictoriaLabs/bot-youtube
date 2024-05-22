@@ -1,9 +1,10 @@
-import { log } from "console";
 import { Chat } from "./chats/chat.ts";
 import * as socket from './socket';
 
 let channels: string[] = [];//store the channelIds of the channels to listen to
 let chats: Chat[] = [];//store the chat objects of the channels to listen to
+
+console.log("Bot started");
 
 //listen to the server for channelId and call Chat class to start the chat listener
 socket.onEvent("start", (data: { youtube: string }) => {
