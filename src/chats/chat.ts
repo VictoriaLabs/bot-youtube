@@ -1,6 +1,8 @@
 import { LiveChat } from "youtube-chat";
 import * as socket from "../socket.ts";
 import { getChannelData } from "../services/fetch_acc_data.ts";
+import { chat } from "googleapis/build/src/apis/chat/index";
+import { EmojiItem, MessageItem } from "youtube-chat/dist/types/data";
 
 interface LiveChats {
   [key: string]: LiveChat;
@@ -53,7 +55,23 @@ class Chat {
 
     //emit the message to the server on "chat" event
     liveChat.on("chat", (chatItem) => {
-      socket.emitEvent("message", chatItem);
+      //format the chatItem.message to be like this : message : "message"
+      const chatmessage: (string | EmojiItem)[]  = chatItem.message.map((message) => {
+        if ("text" in message) {
+          return message.text ;
+        } else {
+          return message;
+        }
+      });
+
+      let data = {
+        platform: "youtube",
+        channelName: channelData.name,
+        username: chatItem.author.name,
+        message: chatmessage[0].toString(),
+      }
+
+      socket.emitEvent("sendMessage", data);
     });
 
     //emit the error to the server on "error" event
