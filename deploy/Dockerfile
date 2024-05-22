@@ -6,4 +6,4 @@ COPY ../src ./
 
 RUN npm install
 
-ENTRYPOINT ["npx", "ts-node", "server.js" ]
+ENTRYPOINT ["npx", "ts-node", "app.ts" ]
