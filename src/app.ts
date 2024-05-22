@@ -1,4 +1,3 @@
-import { log } from "console";
 import { Chat } from "./chats/chat.ts";
 import * as socket from './socket';
 
@@ -11,6 +10,7 @@ socket.onEvent("connect", () => {
 
 //listen to the server for channelId and call Chat class to start the chat listener
 socket.onEvent("start", (data: { youtube: string }) => {
+socket.onEvent("start", (data: { youtube: string }) => {
   if (data.youtube != null && data.youtube != "") {
     console.log(`Starting chat for channel ${data.youtube}`);
     
@@ -21,6 +21,7 @@ socket.onEvent("start", (data: { youtube: string }) => {
   }
 });
 
+socket.onEvent("stop", (data: {youtube: string}) => {
 socket.onEvent("stop", (data: {youtube: string}) => {
   if (data.youtube != null && data.youtube != "") {
      chats.forEach((chat, index) => {
