@@ -8,10 +8,12 @@ const socket: Socket = require('socket.io-client')(process.env.WEBSOCKET_URL);
 
 //emit and listen to events
 function emitEvent(eventName: string, data: any): void {
-    if (socket.connected)
+    if (socket.connected) {
+      console.log('Le socket est connecté.');
       socket.emit(eventName, data);
-    else
+    } else {
       console.log('Le socket n\'est pas connecté.');
+    }
 };
 
 //listen to events
